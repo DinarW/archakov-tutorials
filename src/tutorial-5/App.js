@@ -7,6 +7,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 function App() {
   const [comments, setComments] = React.useState([
@@ -37,17 +39,13 @@ function App() {
   });
 
   React.useEffect(() => {
-    localStorage.setItem('comments', JSON.stringify(comments));
-  }, [comments]);
+    const localComments = JSON.parse(localStorage.getItem('comments') || []);
+    setComments(localComments);
+  }, []);
 
   React.useEffect(() => {
-    const localComments = JSON.parse(localStorage.getItem('comments'));
-    if (localComments) {
-      setComments(localComments);
-    } else {
-      localStorage.setItem('comments', JSON.stringify([]));
-    }
-  }, []);
+    localStorage.setItem('comments', JSON.stringify(comments));
+  }, [comments]);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -56,11 +54,12 @@ function App() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { fullName, email, text } = inputValue;
-    if (!fullName || !email || !text) {
+    const isNotValid = Object.values(inputValue).some((value) => value.trim() === '');
+    if (isNotValid) {
       alert('Заполните все поля!');
       return;
     }
+    const { fullName, email, text } = inputValue;
     setComments([
       ...comments,
       { fullName, email, text, createdAt: new Date() },
@@ -71,6 +70,11 @@ function App() {
       text: '',
     });
   };
+
+  const onRemove = (current) => {
+    const newComments = comments.filter((item) => item.createdAt !== current.createdAt);
+    setComments(newComments);
+  }
 
   return (
     <div className={styles.wrap}>
@@ -84,7 +88,16 @@ function App() {
                 <ListItemAvatar>
                   <Avatar />
                 </ListItemAvatar>
-                <ListItemText primary={fullName} secondary={text} />
+                <ListItemText primary={
+                  <React.Fragment>
+                    <div className={styles.comment}>
+                      {fullName}
+                      <IconButton onClick={() => onRemove(comment)} aria-label="delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                  </React.Fragment>
+                } secondary={text} />
               </ListItem>
             );
           })}
