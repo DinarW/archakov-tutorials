@@ -11,6 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
 function App() {
+  const isMountedRef = React.useRef(false);
   const [comments, setComments] = React.useState([
     {
       fullName: 'Bad Guy',
@@ -44,7 +45,10 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    localStorage.setItem('comments', JSON.stringify(comments));
+    if (isMountedRef.current) {
+      localStorage.setItem('comments', JSON.stringify(comments));
+    }
+    isMountedRef.current = true;
   }, [comments]);
 
   const onChangeInput = (e) => {
