@@ -32,7 +32,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form>
         <div className="row">
           <TextField
             name="firstName"
