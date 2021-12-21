@@ -80,6 +80,10 @@ export default function App() {
           <TextField
             {...register('password', {
               required: 'Это обязательное поле!',
+              pattern: {
+                value: /^[A-Za-z0-9]+$/i,
+                message: 'Пароль может содержать только строчные/заглавные буквы латинского алфавита и арабские цифры',
+              },
             })}
             helperText={
               formState.errors.password && formState.errors.password.message
