@@ -6,11 +6,29 @@ import Button from '@mui/material/Button';
 import './styles.css';
 
 export default function App() {
-  const { handleSubmit, register, formState } = useForm();
-  const onSubmit = (values, e) => {
-    e.target.reset();
+  const { handleSubmit, register, formState, reset } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    }
+  });
+
+  const handleClickClear = () => {
+    reset({
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    });
+  };
+
+  const onSubmit = (values) => {
     console.log(values);
-  }
+    handleClickClear();
+  };
 
   return (
     <div className="App">
@@ -73,20 +91,18 @@ export default function App() {
             fullWidth
           />
         </div>
-        <div className="row">
-          <TextField name="about" label="Обо мне" fullWidth />
-        </div>
         <br />
         <div className="row">
           <Button
-            type="submit"
+            onClick={handleSubmit(onSubmit)}
+            disabled={!formState.isValid}
             variant="contained"
             color="primary"
           >
             Зарегистрироваться
           </Button>
           <Button
-            type="reset"
+            onClick={handleClickClear}
             variant="contained"
             color="secondary"
           >
