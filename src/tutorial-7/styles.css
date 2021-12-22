@@ -9,11 +9,15 @@ body {
 }
 
 .row {
-  margin: 20px 0;
   display: flex;
 }
 
 .MuiTextField-root,
 .MuiButton-root {
-  margin: 0 15px !important;
+  margin: 10px 5px !important;
+}
+
+.buttons {
+  margin: 0;
+  justify-content: space-between;
 }
