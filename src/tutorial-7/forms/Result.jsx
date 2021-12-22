@@ -19,19 +19,22 @@ const Result = ({ formsInfo }) => {
           <b>Пароль:</b> {formsInfo.password};
         </li>
       </ul>
+      <hr />
       <h2>Адрес:</h2>
-      <li>
-        <b>Город:</b> {formsInfo.city};
-      </li>
-      <li>
-        <b>Улица:</b> {formsInfo.street};
-      </li>
-      <li>
-        <b>Дом:</b> {formsInfo.home};
-      </li>
-      <li>
-        <b>Номер квартиры:</b> {formsInfo.appartament};
-      </li>
+      <ul>
+        <li>
+          <b>Город:</b> {formsInfo.city};
+        </li>
+        <li>
+          <b>Улица:</b> {formsInfo.street};
+        </li>
+        <li>
+          <b>Дом:</b> {formsInfo.home};
+        </li>
+        <li>
+          <b>Номер квартиры:</b> {formsInfo.appartament};
+        </li>
+      </ul>
     </Paper>
   );
 };

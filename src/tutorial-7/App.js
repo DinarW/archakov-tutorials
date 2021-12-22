@@ -11,7 +11,7 @@ export default function App() {
 
   const nextStep = (name) => {
     history.push(name);
-  }
+  };
 
   console.log(formsInfo);
   return (
@@ -19,12 +19,16 @@ export default function App() {
       <Routes>
         <Route
           path="/"
-          element={<PersonalInfoForm setFormsInfo={setFormsInfo} nextStep={nextStep} />}
+          element={
+            <PersonalInfoForm setFormsInfo={setFormsInfo} nextStep={nextStep} />
+          }
           exact
         />
         <Route
           path="/adress"
-          element={<AdressForm setFormsInfo={setFormsInfo} nextStep={nextStep} />}
+          element={
+            <AdressForm setFormsInfo={setFormsInfo} nextStep={nextStep} />
+          }
         />
         <Route path="/result" element={<Result formsInfo={formsInfo} />} />
       </Routes>

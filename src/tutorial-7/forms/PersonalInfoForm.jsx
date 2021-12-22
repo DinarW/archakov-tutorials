@@ -1,22 +1,26 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import FormField from '../components/FormField';
 
 const schema = yup
   .object({
-    firstName: yup.string().min(2, 'Имя должно содержать не менее двух символов').required('Это обязательное поле'),
-    lastName: yup.string().min(1, 'Фамилия должна содержать не менее одного символа'),
-    email: yup.string().required('Это обязательное поле'),
+    firstName: yup
+      .string()
+      .min(2, 'Имя должно содержать не менее двух символов'),
+    lastName: yup
+      .string()
+      .min(1, 'Фамилия должна содержать не менее одного символа'),
+    email: yup.string().email().required('Это обязательное поле'),
     password: yup.string().min(6, 'Пароль должен быть не менее 6 символов'),
   })
   .required();
 
 const PersonalInfoForm = ({ setFormsInfo, nextStep }) => {
-  const { handleSubmit, register, formState, reset } = useForm({
-    mode: 'onChange',
+  const methods = useForm({
+    mode: 'onBlur',
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -25,65 +29,28 @@ const PersonalInfoForm = ({ setFormsInfo, nextStep }) => {
     },
     resolver: yupResolver(schema),
   });
-
+  console.log(methods);
   const onSubmit = (values) => {
     console.log(values);
     setFormsInfo((prev) => ({ ...prev, ...values }));
-    nextStep('adress')
+    nextStep('adress');
   };
-
+  console.log(methods.formState);
   return (
-    <div>
+    <FormProvider {...methods}>
       <form>
         <div className="row">
-          <TextField
-            name="firstName"
-            label="Имя"
-            {...register('firstName')}
-            helperText={
-              formState.errors.firstName && formState.errors.firstName.message
-            }
-            error={!!formState.errors.firstName}
-            fullWidth
-          />
-          <TextField
-            name="lastName"
-            label="Фамилия"
-            {...register('lastName')}
-            helperText={
-              formState.errors.lastName && formState.errors.lastName.message
-            }
-            error={!!formState.errors.lastName}
-            fullWidth
-          />
+          <FormField name="firstName" label="Имя" />
+          <FormField name="lastName" label="Фамилия" />
         </div>
         <div className="row">
-          <TextField
-            name="email"
-            label="E-Mail"
-            {...register('email')}
-            helperText={
-              formState.errors.email && formState.errors.email.message
-            }
-            error={!!formState.errors.email}
-            fullWidth
-          />
-          <TextField
-            name="password"
-            type="password"
-            label="Пароль"
-            {...register('password')}
-            helperText={
-              formState.errors.password && formState.errors.password.message
-            }
-            error={!!formState.errors.password}
-            fullWidth
-          />
+          <FormField name="email" label="E-Mail" />
+          <FormField name="password" label="Пароль" />
         </div>
         <br />
         <div className="row buttons">
           <Button
-            onClick={reset({
+            onClick={methods.reset({
               firstName: '',
               lastName: '',
               email: '',
@@ -95,8 +62,8 @@ const PersonalInfoForm = ({ setFormsInfo, nextStep }) => {
             Очистить
           </Button>
           <Button
-            onClick={handleSubmit(onSubmit)}
-            disabled={!formState.isValid}
+            onClick={methods.handleSubmit(onSubmit)}
+            disabled={!methods.formState.isValid}
             variant="contained"
             color="primary"
           >
@@ -104,7 +71,7 @@ const PersonalInfoForm = ({ setFormsInfo, nextStep }) => {
           </Button>
         </div>
       </form>
-    </div>
+    </FormProvider>
   );
 };
 
