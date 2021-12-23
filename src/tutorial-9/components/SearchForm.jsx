@@ -4,12 +4,13 @@ import axios from 'axios';
 export const SearchForm = ({ setUserInfo }) => {
   const [inputValue, setInputValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
+  const userNotFound = React.useRef();
   const timerRef = React.useRef();
   const url = new URL(window.location.href);
 
   React.useEffect(() => {
     const login = url.searchParams.get('login');
-    console.log(login);
+
     if (login) {
       searchUser(login);
     }
@@ -19,6 +20,7 @@ export const SearchForm = ({ setUserInfo }) => {
   function changeInput(e) {
     const { value } = e.target;
     setInputValue(value);
+
     clearTimeout(timerRef.current);
     if (value) {
       timerRef.current = setTimeout(() => {
@@ -51,11 +53,13 @@ export const SearchForm = ({ setUserInfo }) => {
         repos: data.public_repos,
         stars: data.public_gists,
       });
+
+      userNotFound.current.style.display = 'none';
       url.searchParams.set('login', userName);
       window.history.pushState(null, null, url.href);
     } catch (error) {
       if (error?.response?.status === 404) {
-        alert('Пользователь с таким никнеймом не найден');
+        userNotFound.current.style.display = 'inline';
       } else {
         alert('Ошибка при получении данных :(');
       }
@@ -82,6 +86,7 @@ export const SearchForm = ({ setUserInfo }) => {
         >
         {!isLoading ? 'Найти' : 'Загрузка...'}
       </button>
+      <label ref={userNotFound} className="app-form_label">Пользователь не найден</label>
     </form>
   );
 };

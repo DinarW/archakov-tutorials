@@ -31,7 +31,7 @@ body {
 .app-form {
   position: relative;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
 }
 
 .app-input {
@@ -53,6 +53,13 @@ body {
 
 .app-input::placeholder {
   color: var(--main-color);
+}
+
+.app-form_label {
+  position: absolute;
+  left: 10px;
+  top: 65px;
+  display: none;
 }
 
 .app-form_btn {
