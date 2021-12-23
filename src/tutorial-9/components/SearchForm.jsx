@@ -5,6 +5,16 @@ export const SearchForm = ({ setUserInfo }) => {
   const [inputValue, setInputValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const timerRef = React.useRef();
+  const url = new URL(window.location.href);
+
+  React.useEffect(() => {
+    const login = url.searchParams.get('login');
+    console.log(login);
+    if (login) {
+      searchUser(login);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function changeInput(e) {
     const { value } = e.target;
@@ -41,6 +51,8 @@ export const SearchForm = ({ setUserInfo }) => {
         repos: data.public_repos,
         stars: data.public_gists,
       });
+      url.searchParams.set('login', userName);
+      window.history.pushState(null, null, url.href);
     } catch (error) {
       if (error?.response?.status === 404) {
         alert('Пользователь с таким никнеймом не найден');
