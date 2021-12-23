@@ -4,18 +4,18 @@ import axios from 'axios';
 export const SearchForm = ({ setUserInfo }) => {
   const [inputValue, setInputValue] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
-  const [timeoutChange, setTimeoutChange] = React.useState(null);
+  const timerRef = React.useRef();
 
   function changeInput(e) {
     const { value } = e.target;
     setInputValue(value);
-    clearTimeout(timeoutChange);
-    setTimeoutChange(
-      setTimeout(() => {
-        clearTimeout(timeoutChange);
+    clearTimeout(timerRef.current);
+    if (value) {
+      timerRef.current = setTimeout(() => {
+        clearTimeout(timerRef.current);
         searchUser(value);
-      }, 500)
-    );
+      }, 500);
+    }
   }
 
   const clickSearchButton = (e) => {
@@ -64,7 +64,13 @@ export const SearchForm = ({ setUserInfo }) => {
         className="app-input"
         placeholder="Укажите GitHub-аккаунт"
       />
-      <button onClick={clickSearchButton} className="app-form_btn" disabled={isLoading}>{!isLoading ? 'Найти' : 'Загрузка...'}</button>
+      <button 
+        onClick={clickSearchButton}
+        className="app-form_btn"
+        disabled={isLoading}
+        >
+        {!isLoading ? 'Найти' : 'Загрузка...'}
+      </button>
     </form>
   );
 };
