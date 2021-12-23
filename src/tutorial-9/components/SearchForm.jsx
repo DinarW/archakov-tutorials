@@ -24,7 +24,6 @@ export const SearchForm = ({ setUserInfo }) => {
     clearTimeout(timerRef.current);
     if (value) {
       timerRef.current = setTimeout(() => {
-        clearTimeout(timerRef.current);
         searchUser(value);
       }, 500);
     }
