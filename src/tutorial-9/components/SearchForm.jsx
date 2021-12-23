@@ -29,8 +29,6 @@ export const SearchForm = ({ setUserInfo }) => {
       const { data } = await axios.get(
         `https://api.github.com/users/${userName}`
       );
-      setInputValue('');
-      setIsLoading(false);
       const { bio, followers, login, name, blog, location } = data;
       setUserInfo({
         avatar: data.avatar_url,
@@ -50,6 +48,7 @@ export const SearchForm = ({ setUserInfo }) => {
         alert('Ошибка при получении данных :(');
       }
       console.error(error);
+    } finally {
       setInputValue('');
       setIsLoading(false);
     }

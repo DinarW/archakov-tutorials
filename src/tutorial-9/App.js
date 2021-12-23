@@ -5,13 +5,13 @@ import UserInfoBlock from './components/UserInfoBlock';
 import './style.css';
 
 const App = () => {
-  const [userInfo, setUserInfo] = React.useState({});
+  const [userInfo, setUserInfo] = React.useState(null);
 
   return (
     <div id="app">
       <div className="app-container">
         <SearchForm setUserInfo={setUserInfo} />
-        {!!Object.keys(userInfo).length && (
+        {userInfo && (
           <UserInfoBlock userInfo={userInfo} />
         )}
       </div>
